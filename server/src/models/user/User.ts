@@ -1,12 +1,15 @@
 import {Model, ObjectID} from "@tsed/mongoose";
 import { Property, Required } from "@tsed/schema";
 import {Credential} from "./Credential";
+import {UserInfo} from "@tsed/passport";
+import {Format} from "@tsed/common";
 
 @Model()
 export class User {
     @ObjectID("id")
     _id: string;
 
+    @Format("email")
     @Required()
     email: string;
     
@@ -19,5 +22,8 @@ export class User {
     @Required(false)
     token: string;
 
+    verifyPassword(password: string){
+        return this.password === password;
+    }
   
 }

@@ -9,11 +9,12 @@ import bodyParser from "body-parser";
 import compress from "compression";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
-import cors from "cors";
+// import cors from "cors";
 import "@tsed/ajv";
 import mongooseConfig from "./config/mongoose";
 export const rootDir = __dirname;
 import {User} from "./models/user/User";
+import session from "express-session";
 
 @Configuration({
   rootDir,
@@ -57,18 +58,18 @@ export class Server {
       .use(bodyParser.json())
       .use(bodyParser.urlencoded({
         extended: true
+      }))
+      .use(session({
+        secret: "mysecretkey",
+        resave: true,
+        saveUninitialized: true,
+        // maxAge: 36000,
+        cookie: {
+          path: "/",
+          httpOnly: true,
+          secure: false,
+          // maxAge: null
+        }
       }));
-      // .use(session({
-      //   secret: "mysecretkey",
-      //   resave: true,
-      //   saveUninitialized: true,
-      //   // maxAge: 36000,
-      //   cookie: {
-      //     path: "/",
-      //     httpOnly: true,
-      //     secure: false,
-      //     // maxAge: null
-      //   }
-      // }));
   }
 }

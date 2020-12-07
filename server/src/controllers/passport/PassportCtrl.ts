@@ -1,5 +1,5 @@
 import {BodyParams, Controller, Get, Post, Req, HeaderParams, Scope, ProviderScope} from "@tsed/common";
-import { Returns } from "@tsed/schema";
+import { Required, Returns } from "@tsed/schema";
 import {User} from "../../models/user/User";
 import {Authenticate, Authorize} from "@tsed/passport";
 import {Credential} from "../../models/user/Credential";
@@ -10,14 +10,14 @@ export class PassportCtrl {
     @Post("/signup")
     @Returns(201, User)
     @Authenticate("signup")
-    signup(@Req() req:Req, @BodyParams() user: User ) {
+    signup(@Req() req:Req, @Required() @BodyParams("email") email: String, @Required() @BodyParams("password") password: String, @Required() @BodyParams("name") name: string ) {
         return req.user;
     }
 
+    // @Returns(200, User)
     @Post("/login")
-    @Returns(200, User)
     @Authenticate("login")
-    login(@Req() req:Req, @BodyParams() user: User ) {
+    login(@Req() req:Req, @Required() @BodyParams("email") email: String, @Required() @BodyParams("password") password: String ) {
         return req.user;
     }
     // @Get("/userinfo")

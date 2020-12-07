@@ -22,12 +22,15 @@ export class LoginProtocol implements OnVerify, OnInstall {
   jwtSettings: any;
 
 
-  async $onVerify(@Req() request: Req, @BodyParams() user: User) {
-    const {email} = user;
+  async $onVerify(@Req() request: Req, @BodyParams() credentials: any) {
+    const {email, password} = credentials;
     const found = await this.userService.find(email);
 
     if (!found) {
       throw new Forbidden("Not User Please Register");
+    }
+    if (!found.verifyPassword(password)){
+      throw new Forbidden("check password");
     }
 
     const token = this.createJwt(found);
@@ -38,7 +41,7 @@ export class LoginProtocol implements OnVerify, OnInstall {
 
 
     // this.userService.update(found)
-    this.userService.attachToken(user,token);
+    this.userService.attachToken(credentials,token);
     
     return found.token;
   }
