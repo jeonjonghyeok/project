@@ -12,7 +12,7 @@ export class User {
     @Format("email")
     @Required()
     email: string;
-    
+
     @Required(false)
     name: string;
 
@@ -22,8 +22,14 @@ export class User {
     @Required(false)
     token: string;
 
+		@Required(false)
+		address: string;
+
+		@Required(false)
+		crypto: string;
+
     verifyPassword(password: string){
         return this.password === password;
     }
-  
+
 }
